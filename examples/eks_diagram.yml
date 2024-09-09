@@ -1,0 +1,56 @@
+diagram:
+  name: EKS Terraform Configuration
+  direction: TB
+clusters:
+  - name: AWS Account
+    nodes:
+      - name: VPC
+        type: network.VPC
+      - name: Subnet 1a
+        type: network.PrivateSubnet
+      - name: Subnet 1d
+        type: network.PrivateSubnet
+      - name: Internet Gateway
+        type: network.InternetGateway
+      - name: IAM Roles
+        type: security.IAM
+      - name: EBS
+        type: storage.EBS
+    clusters:
+      - name: EKS Cluster
+        nodes:
+          - name: EKS
+            type: compute.EKS
+          - name: CoreDNS
+            type: network.Service
+          - name: kube-proxy
+            type: network.Service
+          - name: vpc-cni
+            type: network.Service
+          - name: ebs-csi-driver
+            type: network.Service
+          - name: pod-identity-agent
+            type: network.Service
+          - name: s3-csi-driver
+            type: network.Service
+        clusters:
+          - name: Node Group
+            nodes:
+              - name: Worker
+                type: compute.Pod
+                count: 3
+connections:
+  - from: VPC
+    to: [Subnet 1a, Subnet 1d]
+  - from: VPC
+    to: Internet Gateway
+  - from: [Subnet 1a, Subnet 1d]
+    to: EKS
+  - from: EKS
+    to: Worker
+  - from: Worker
+    to: [CoreDNS, kube-proxy, vpc-cni, ebs-csi-driver, pod-identity-agent, s3-csi-driver]
+  - from: IAM Roles
+    to: EKS
+  - from: EBS
+    to: Worker

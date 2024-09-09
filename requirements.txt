@@ -1,0 +1,26 @@
+# Core dependencies
+PyYAML>=6.0
+diagrams>=0.23.3
+graphviz>=0.20.1
+
+# Cloud provider SDKs
+boto3
+azure-mgmt-compute
+azure-mgmt-network
+azure-mgmt-storage
+google-cloud-storage
+google-cloud-compute
+kubernetes
+python-openstackclient
+aliyun-python-sdk-core
+aliyun-python-sdk-ecs
+oci
+ibm-cloud-sdk-core
+ibm-platform-services
+python-digitalocean
+
+# For type hinting support
+typing-extensions>=4.5.0
+
+# For better Python compatibility
+importlib-metadata>=6.0.0; python_version < "3.8"
